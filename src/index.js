@@ -51,22 +51,22 @@ export default function carousel (elem) {
     return getShowing() >= children.length
   }
 
-  function start (interval=4000) {
-    if (intervalID === null) {
+  function start (interval=4000, {
+    skipFirst=false
+  }) {
+    if (intervalID !== null) return
+    updateChildren()
+    if (!skipFirst) next()
+    intervalID = setInterval(function () {
       updateChildren()
       next()
-      intervalID = setInterval(function () {
-        updateChildren()
-        next()
-      }, interval)
-    }
+    }, interval)
   }
 
   function stop () {
-    if (intervalID) {
-      clearInterval(intervalID)
-      intervalID = null
-    }
+    if (!intervalID) return
+    clearInterval(intervalID)
+    intervalID = null
   }
 
   return Object.freeze({

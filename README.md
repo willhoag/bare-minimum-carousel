@@ -19,11 +19,10 @@ npm install bare-minimum-carousel --save
 ```
 
 ## Usage
-for html like this
+index.html
 ```html
 <div style="overflow: hidden;">
-    <div style="white-space: nowrap; transition: translateX 1s; width: 100px;"
-    class="js-carousel">
+    <div class="js-carousel" style="white-space: nowrap; transition: transform 1s; width: 100px;">
         <img src="image1.jpg" width="100px" style="display: inline-block">
         <img src="image2.jpg" width="100px" style="display: inline-block">
         <img src="image3.jpg" width="100px" style="display: inline-block">
@@ -31,6 +30,7 @@ for html like this
 </div>
 ```
 
+main.js
 ```js
 // require module
 const carousel = require('bare-minimum-carousel');
@@ -38,20 +38,22 @@ const carousel = require('bare-minimum-carousel');
 const elem = document.querySelector('.js-carousel')
 
 const c = carousel(elem) // returns a carousel object
-c.start(2000) // starts the carousel changing every 2 seconds
+c.start(2000, { skipFirst: true }) // starts the carousel changing every 2 seconds and skip first invocation
 c.stop() // stops the carousel
 c.next(2) // moves two itmes forward
 c.goTo(1) // goes to the 2nd item
 
-// recalc on resize change
+// recalc on window resize
 window.addEventListener('resize', c.recalc.bind(c))
 ```
 
 ## API
 
 - `carousel(elem:dom element)` returns a carousel object
-- `c.start(interval:int)` starts the carousel with specified interval (default:
+- `c.start(interval:int, options:obj)` starts the carousel with specified interval (default:
   4000)
+  - `options:obj`
+    - `skipFirst:` skips first invocation on start
 - `c.stop()` stops the carousel
 - `c.next(by:int)` changes to the next item in the carousel by relative index
   (default: 1)
