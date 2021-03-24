@@ -1,7 +1,7 @@
 {
   "name": "bare-minimum-carousel",
   "description": "A bare minimum responsive carousel for the browser",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": {
     "name": "Will Hoag",
     "email": "dev@willhoag.com",
