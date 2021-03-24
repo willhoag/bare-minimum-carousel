@@ -2,13 +2,16 @@ function add (x, y) {
   return x + y
 }
 
-export default function carousel (elem) {
+export default function carousel (elem, {
+  startAt=0
+} = {}) {
   let currentIndex = 0
   let intervalID = null
   let children = null
   let childrenWidths = null
+  let listeners = []
   updateChildren()
-  goTo(0)
+  goTo(startAt)
 
   function updateChildren () {
     children = Array.prototype.slice
@@ -17,6 +20,7 @@ export default function carousel (elem) {
   }
 
   function next (by=1) {
+    updateChildren()
     const endIndex = children.length - getShowing() + 1
     const i = (currentIndex + by + endIndex) % endIndex
     goTo(i)
@@ -28,6 +32,7 @@ export default function carousel (elem) {
   }
 
   function goTo (index=0) {
+    updateChildren()
     let translateX = 0
     childrenWidths // get translateX for current index
       .some((width, i) => {
@@ -35,7 +40,10 @@ export default function carousel (elem) {
         translateX += width
       })
     elem.style.transform = `translateX(-${translateX}px)`
-    currentIndex = index
+    if (currentIndex !== index) {
+      currentIndex = index
+      listeners.forEach(listener => listener(currentIndex))
+    }
   }
 
   function isPlaying () {
@@ -49,6 +57,10 @@ export default function carousel (elem) {
   function isShowingAll () {
     updateChildren()
     return getShowing() >= children.length
+  }
+
+  function onChange (listener) {
+    listeners.push(listener)
   }
 
   function start (interval=4000, {
@@ -72,16 +84,11 @@ export default function carousel (elem) {
   return Object.freeze({
     start,
     stop,
-    next: function (by) {
-      updateChildren()
-      next(by)
-    },
-    goTo: function (i) {
-      updateChildren()
-      goTo(i)
-    },
+    next,
+    goTo,
     isPlaying,
     isShowingAll,
-    recalc
+    recalc,
+    onChange
   })
 }

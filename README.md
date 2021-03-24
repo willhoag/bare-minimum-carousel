@@ -42,6 +42,9 @@ c.start(2000, { skipFirst: true }) // starts the carousel changing every 2 secon
 c.stop() // stops the carousel
 c.next(2) // moves two itmes forward
 c.goTo(1) // goes to the 2nd item
+c.onChange(i => {
+  // do something when the index changes
+})
 
 // recalc on window resize
 window.addEventListener('resize', c.recalc.bind(c))
@@ -59,6 +62,7 @@ window.addEventListener('resize', c.recalc.bind(c))
   (default: 1)
 - `c.goTo(index:int)` changes to the specified index in the carousel (default: 0)
 - `c.recalc()` recalculates translateX for the current index
+- `c.onChange(listener:function(i))` do something when the current index changes
 
 ## License
 
