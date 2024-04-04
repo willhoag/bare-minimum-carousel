@@ -51,7 +51,8 @@ export default function carousel (elem, {
   }
 
   function getShowing () {
-    return Math.round((elem.offsetWidth / childrenWidths.reduce(add)) * children.length)
+    // or 0 if no children or childrenWidths are zero (NaN). Happens in some browsers when opened in background before layout happens.
+    return Math.round((elem.offsetWidth / childrenWidths.reduce(add)) * children.length) || 0;
   }
 
   function isShowingAll () {
